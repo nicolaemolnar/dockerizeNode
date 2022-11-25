@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  web:
+    image: nicolaemolnar/dockerize-node
+    ports:
+      - 3000:3000
+    environment:
+      DB_HOST: db
+      DB_USER: admin
+      DB_PASSWORD: 1234
+      DB_NAME: cars
+    networks:
+      - backend
+  db:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: cars
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 1234
+    volumes:
+      - ./db/entrypoint.sql:/docker-entrypoint-initdb.d/entrypoint.sql
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

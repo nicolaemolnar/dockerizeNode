@@ -1,7 +1,8 @@
-import express from 'express';
-import { createConnection } from 'mysql';
+const express = require('express');
+const bodyParser = require('body-parser');
+const mysql = require('mysql');
 
-const db = createConnection({
+const db = mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'admin',
     password: process.env.DB_PASSWORD || '1234',
@@ -9,6 +10,7 @@ const db = createConnection({
 });
 
 const app = express();
+app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => res.json({ 
@@ -37,10 +39,14 @@ app.get('/api/cars/:id', (req, res) =>
 
 app.post('/api/cars', (req, res) =>
     // Add a new car to db
-    db.query('INSERT INTO cars SET ?', req.body, (err, rows) => {
-        if (err) throw err;
-        res.json(rows);
+    db.query('INSERT INTO cars (name, model, price) VALUES (?, ?, ?)', [req.body.name, req.body.model, req.body.price], (err, rows) => {
+        if (err) {
+            res.json({ message: 'Error adding car to database' });
+            throw err;
+        }
+        res.json({ message: 'Car added to database' });
     })
+    
 );
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

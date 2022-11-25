@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/nicolaemolnar/dockerizeNode#readme",
   "dependencies": {
+    "body-parser": "^1.20.1",
     "express": "^4.18.2",
     "mysql": "^2.18.1"
   }
